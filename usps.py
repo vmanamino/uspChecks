@@ -22,6 +22,9 @@ sys.path.append('C:\\Code\\uspChecks\\library')
 import re
 from sheetInfo import headers, column_number
 from sheetData import get_sheetdata
+import time 
+
+startTime = time.time()
 
 data = get_sheetdata("dataset/uspDataset_test.xlsx")
 
@@ -46,27 +49,45 @@ count = data.max_row
 
 buk = Workbook()
 
-outsheet = buk.active
+outsheet_full = buk.active
+outsheet_full.title = 'usp total'
+
+# create sheet for 1 usp
+uspOne = buk.create_sheet('1 usp')
 
 # name the output headers
 # make this dynamic
-n_row = 1
-outsheet.cell(row=n_row, column=1, value=input1)
-outsheet.cell(row=n_row, column=2, value=input2)
-outsheet.cell(row=n_row, column=3, value="# USPs")
+n_row_full = 1
+outsheet_full.cell(row=n_row_full, column=1, value=input1)
+outsheet_full.cell(row=n_row_full, column=2, value=input2)
+outsheet_full.cell(row=n_row_full, column=3, value="# USPs")
 
+# 1 usp sheet
+n_row_uspOne = 1
+uspOne.cell(row=n_row_uspOne, column=1, value=input1)
+uspOne.cell(row=n_row_uspOne, column=2, value=input2)
 
-for n in range(2, 5):
+for n in range(2, count):
 	project_prelim = data.cell(row=n, column=16).value
 	p = re.compile(r'\bpreliminary\b')
 	if not p.search(project_prelim):
-		n_row += 1
+		n_row_full += 1
 		inOne = data.cell(row=n, column=col_num_one).value
 		inTwo = data.cell(row=n, column=col_num_two).value
 		p = re.compile(r'<p>')
-		m = p.findall(inTwo)
-		outsheet.cell(row=n_row, column=1, value=inOne)
-		outsheet.cell(row=n_row, column=2, value=inTwo)
-		outsheet.cell(row=n_row, column=3, value=len(m))
+		m = p.findall(str(inTwo))
+		if len(m) is 0:
+			p = re.compile(r'<div>')
+			m = p.findall(str(inTwo))
+		total = len(m)
+		outsheet_full.cell(row=n_row_full, column=1, value=inOne)
+		outsheet_full.cell(row=n_row_full, column=2, value=inTwo)
+		outsheet_full.cell(row=n_row_full, column=3, value=total)
+		if len(m) is 1:
+			n_row_uspOne += 1
+			uspOne.cell(row=n_row_uspOne, column=1, value=inOne)
+			uspOne.cell(row=n_row_uspOne, column=2, value=inTwo)
 
 buk.save('results/output.xlsx')
+
+print ('The script took {0} second !'.format(time.time() - startTime))
