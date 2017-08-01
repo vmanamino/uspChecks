@@ -19,10 +19,11 @@ from openpyxl.utils import coordinate_from_string, column_index_from_string
 from openpyxl import Workbook
 import sys
 sys.path.append('C:\\Code\\uspChecks\\library')
+import re
 from sheetInfo import headers, column_number
 from sheetData import get_sheetdata
 
-data = get_sheetdata("dataset/uspDataset_current.xlsx")
+data = get_sheetdata("dataset/uspDataset_test.xlsx")
 
 # for row in data.iter_rows('A{}:A{}'.format(2, 10)):
 # 	for cell in row:
@@ -49,13 +50,23 @@ outsheet = buk.active
 
 # name the output headers
 # make this dynamic
-outsheet.cell(row=1, column=1, value=input1)
-outsheet.cell(row=1, column=2, value=input2)
+n_row = 1
+outsheet.cell(row=n_row, column=1, value=input1)
+outsheet.cell(row=n_row, column=2, value=input2)
+outsheet.cell(row=n_row, column=3, value="# USPs")
+
 
 for n in range(2, 5):
-	outsheet.cell(row=n, column=1, value=(data.cell(row=n, column=col_num_one).value))
-	outsheet.cell(row=n, column=2, value=(data.cell(row=n, column=col_num_two).value))
-
-# data.cell(row=n, column=col_num_two).value)
+	project_prelim = data.cell(row=n, column=16).value
+	p = re.compile(r'\bpreliminary\b')
+	if not p.search(project_prelim):
+		n_row += 1
+		inOne = data.cell(row=n, column=col_num_one).value
+		inTwo = data.cell(row=n, column=col_num_two).value
+		p = re.compile(r'<p>')
+		m = p.findall(inTwo)
+		outsheet.cell(row=n_row, column=1, value=inOne)
+		outsheet.cell(row=n_row, column=2, value=inTwo)
+		outsheet.cell(row=n_row, column=3, value=len(m))
 
 buk.save('results/output.xlsx')
