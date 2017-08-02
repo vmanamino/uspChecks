@@ -17,6 +17,7 @@ later create report of each title that has option
 # https://stackoverflow.com/questions/38619471/iterate-through-all-rows-in-specific-column-openpyxl
 from openpyxl.utils import coordinate_from_string, column_index_from_string
 from openpyxl import Workbook
+import os
 import sys
 sys.path.append('C:\\Code\\uspChecks\\library')
 import re
@@ -26,13 +27,17 @@ import time
 
 startTime = time.time()
 
-data = get_sheetdata("dataset/uspDataset_test.xlsx")
+data = get_sheetdata("dataset/uspDataset_current.xlsx")
 
 # for row in data.iter_rows('A{}:A{}'.format(2, 10)):
 # 	for cell in row:
 # 		print(cell.value)
 
-# get column by header
+# get file name from input
+
+file = sys.argv[0]
+file_parts = os.path.splitext(file)
+file_stem = file_parts[0]
 
 # provide options for standard input based on headers dict
 
@@ -59,13 +64,17 @@ uspOne = buk.create_sheet('1 usp')
 # make this dynamic
 n_row_full = 1
 outsheet_full.cell(row=n_row_full, column=1, value=input1)
-outsheet_full.cell(row=n_row_full, column=2, value=input2)
-outsheet_full.cell(row=n_row_full, column=3, value="# USPs")
+outsheet_full.cell(row=n_row_full, column=2, value="ISBN")
+outsheet_full.cell(row=n_row_full, column=3, value=input2)
+outsheet_full.cell(row=n_row_full, column=4, value="# USPs")
+
 
 # 1 usp sheet
 n_row_uspOne = 1
 uspOne.cell(row=n_row_uspOne, column=1, value=input1)
-uspOne.cell(row=n_row_uspOne, column=2, value=input2)
+uspOne.cell(row=n_row_uspOne, column=2, value="ISBN")
+uspOne.cell(row=n_row_uspOne, column=3, value=input2)
+
 
 for n in range(2, count):
 	project_prelim = data.cell(row=n, column=16).value
@@ -81,13 +90,18 @@ for n in range(2, count):
 			m = p.findall(str(inTwo))
 		total = len(m)
 		outsheet_full.cell(row=n_row_full, column=1, value=inOne)
-		outsheet_full.cell(row=n_row_full, column=2, value=inTwo)
-		outsheet_full.cell(row=n_row_full, column=3, value=total)
+		
+		outsheet_full.cell(row=n_row_full, column=2, value=data.cell(row=n, 
+			column=2).value) # ISBN
+		outsheet_full.cell(row=n_row_full, column=3, value=inTwo)
+		outsheet_full.cell(row=n_row_full, column=4, value=total)
 		if len(m) is 1:
 			n_row_uspOne += 1
 			uspOne.cell(row=n_row_uspOne, column=1, value=inOne)
-			uspOne.cell(row=n_row_uspOne, column=2, value=inTwo)
+			uspOne.cell(row=n_row_uspOne, column=2, value=data.cell(row=n,
+				column=2).value) # ISBN
+			uspOne.cell(row=n_row_uspOne, column=3, value=inTwo)
 
-buk.save('results/output.xlsx')
+buk.save('results/'+file_stem+'_'+input2+'.xlsx')
 
-print ('The script took {0} second !'.format(time.time() - startTime))
+print ('The script took {0} seconds !'.format(time.time() - startTime))
