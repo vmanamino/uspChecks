@@ -52,24 +52,24 @@ liTag_divWrapped_target = """<div><ul><li>USP 1</li><li>USP 2</li><li>USP-3</li>
 class isTagTests(unittest.TestCase):	
 	
 	def test_vanilla_One(self):
-		self.failUnless(tag_count(pTag_target) is 3)
-		self.failUnless(tag_count(divTag_target) is 3)
-		self.failUnless(tag_count(brTag_target) is 3)
+		self.assertTrue(tag_count(pTag_target) is 3)
+		self.assertTrue(tag_count(divTag_target) is 3)
+		self.assertTrue(tag_count(brTag_target) is 3)
 
 	def test_vanilla_Two(self):
-		self.failIf(tag_count(pTag_one_less) is 3)
-		self.failIf(tag_count(divTag_one_less) is 3)
-		self.failIf(tag_count(brTag_one_less) is 3)
+		self.assertFalse(tag_count(pTag_one_less) is 3)
+		self.assertFalse(tag_count(divTag_one_less) is 3)
+		self.assertFalse(tag_count(brTag_one_less) is 3)
 
 	def test_vanilla_Three(self):
-		self.failIf(tag_count(pTag_one_more) is 3)
-		self.failIf(tag_count(divTag_one_more) is 3)
-		self.failIf(tag_count(brTag_one_more) is 3)
+		self.assertFalse(tag_count(pTag_one_more) is 3)
+		self.assertFalse(tag_count(divTag_one_more) is 3)
+		self.assertFalse(tag_count(brTag_one_more) is 3)
 
 	def test_vanilla_Four(self):
-		self.failIf(tag_count(pTag_target) is not 3)
-		self.failIf(tag_count(divTag_target) is not 3)
-		self.failIf(tag_count(brTag_target) is not 3)
+		self.assertFalse(tag_count(pTag_target) is not 3)
+		self.assertFalse(tag_count(divTag_target) is not 3)
+		self.assertFalse(tag_count(brTag_target) is not 3)
 
 
 def main():
