@@ -1,31 +1,27 @@
 from html.parser import HTMLParser
-import usp
 
-class MyHTMLParser(HTMLParser):
-
-    def __init__(self, usp):
+class uspHtmlParser(HTMLParser):
+    
+    def __init__(self):
         HTMLParser.__init__(self)  
-        self.start = ''
-        self.end = ''
-        self.data = ''
-        self.usps = []	       
-    def handle_starttag(self, tag, attrs):
-        self.start = tag
-        usp.start_tag = tag
-    def handle_endtag(self, tag):
-        self.end = tag
-        usp.end_tag = tag
+        	       
     def handle_data(self, data):
-        self.data = data
-        usp.data = data
-        self.usps.append(usp)
+        self.output.append(data)
+        
+    def feed(self, data):        
+        self.output = []
+
+        HTMLParser.feed(self, data)
+        
 divTag = '<div>usp1</div><div>usp2</div><div>usp3</div>'
+divTag2 = '<div>usp1</div>'
+brTag = """USP 1<br>USP II<br>USP-3"""
+divTag_wrap = """<div>USP 1</div><div><br></div><div>USP 2</div><div><br></div><div>USP-3</div><div><br></div><div>USP 4</div>"""
+none = """USP 1  USP2  USP-3"""
+# usp = usp.USP()
 
 
-usp = usp.USP()
-parser = MyHTMLParser(usp)
-parser.feed(divTag)
-print(parser.usps[1].data)
+
 
 
 

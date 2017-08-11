@@ -21,14 +21,14 @@ import os
 import sys
 sys.path.append('C:\\Code\\uspChecks\\library')
 import re
-from regexs import tag_count
-from sheetInfo import headers, column_number
-from sheetData import get_sheetdata
+from html_tags import tag_content
+from sheet_info import headers, column_number
+from sheet_data import get_sheetdata
 import time 
 
 startTime = time.time()
 
-data = get_sheetdata("dataset/uspDataset_current.xlsx")
+data = get_sheetdata("dataset/uspDataset_test.xlsx")
 
 # for row in data.iter_rows('A{}:A{}'.format(2, 10)):
 # 	for cell in row:
@@ -59,7 +59,7 @@ outsheet_full = buk.active
 outsheet_full.title = 'usp total'
 
 # create sheet for 1 usp
-uspOne = buk.create_sheet('1 usp')
+uspOne = buk.create_sheet('1 usp_editorial')
 
 # name the output headers
 # make this dynamic
@@ -77,14 +77,15 @@ uspOne.cell(row=n_row_uspOne, column=2, value="ISBN")
 uspOne.cell(row=n_row_uspOne, column=3, value=input2)
 
 
-for n in range(2, count):
+for n in range(2, 10):
 	project_prelim = data.cell(row=n, column=16).value
 	p = re.compile(r'\bpreliminary\b')
 	if not p.search(project_prelim):
 		n_row_full += 1
 		inOne = data.cell(row=n, column=col_num_one).value
 		inTwo = data.cell(row=n, column=col_num_two).value
-		total = tag_count(inTwo)
+		usps = tag_content(inTwo)
+		total = len(usps)
 		outsheet_full.cell(row=n_row_full, column=1, value=inOne)		
 		outsheet_full.cell(row=n_row_full, column=2, value=data.cell(row=n, 
 			column=2).value) # ISBN

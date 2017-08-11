@@ -4,7 +4,7 @@ from openpyxl.compat import range
 from openpyxl.utils import get_column_letter
 import sys
 sys.path.append('C:\\Code\\uspChecks\\library')
-from sheetInfo import headers
+from sheet_info import headers
 import string
 
 '''
