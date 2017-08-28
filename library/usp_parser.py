@@ -15,6 +15,17 @@ class uspHtmlParser(HTMLParser):
         self.output = []
         self.tags = []
         HTMLParser.feed(self, data)
+
+    
+    def usps_parsed(self):
+        count = 0
+        stri = ''
+        for usp in self.output:
+            count += 1
+            stri += usp
+            if count < len(self.output):
+                stri += ' |'
+        return stri
         
 # divTag = '<div>usp1</div><div>usp2</div><div>usp3</div>'
 # divTag2 = '<div>usp1</div>'
@@ -23,6 +34,8 @@ class uspHtmlParser(HTMLParser):
 # divTag_wrap = """<div>USP 1</div><div><br></div><div>USP 2</div><div><br></div><div>USP-3</div><div><br></div><div>USP 4</div>"""
 # none = """USP 1  USP2  USP-3"""
 # parser = uspHtmlParser()
+# parser.feed(divTag_wrap)
+# print(parser.usps_parsed())
 # data = parser.feed(none)
 # print(parser.output)
 # print(len(parser.tags))

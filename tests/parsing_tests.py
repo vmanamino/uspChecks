@@ -13,8 +13,7 @@ parser = uspHtmlParser()
 Vanilla USPs
 '''
 
-pTag_target = """<p>USP 1 </p><p>USP2
- 		</p><p>USP-3</p>"""
+pTag_target = """<p>USP 1</p><p>USP 2</p><p>USP-3</p>"""
 
 pTag_one_less = """<p>USP 1 </p><p>USP2	</p>"""
 
@@ -113,6 +112,20 @@ class isTagTests(unittest.TestCase):
 	def test_chunky_One(self):
 		parser.feed(divTag_wrap_target)
 		self.assertTrue(len(parser.tags) is 10)
+
+class isContentTests(unittest.TestCase):
+
+	def test_vanilla_One(self):
+		parser.feed(pTag_target)		
+		self.assertTrue(parser.usps_parsed() == 'USP 1 |USP 2 |USP-3')
+
+	def test_swirl_One(self):
+		parser.feed(liTag_divWrapped_target)
+		self.assertTrue(parser.usps_parsed() == 'USP 1 |USP 2 |USP-3')
+
+	def test_chunky_One(self):
+		parser.feed(divTag_wrap_target)
+		self.assertTrue(parser.usps_parsed() == 'USP 1 |USP 2 |USP-3 |USP 4')
 
 def main():
     unittest.main()

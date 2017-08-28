@@ -79,6 +79,7 @@ usp_input2.cell(row=n_row_input2, column=1, value=input1)
 usp_input2.cell(row=n_row_input2, column=2, value="ISBN")
 usp_input2.cell(row=n_row_input2, column=3, value=input2)
 usp_input2.cell(row=n_row_input2, column=4, value="# of HTML USPs")
+usp_input2.cell(row=n_row_input2, column=4, value="USP content")
 
 
 for n in range(2, 10):
@@ -106,12 +107,9 @@ for n in range(2, 10):
 				column=2).value) # ISBN
 			usp_input2.cell(row=n_row_input2, column=3, value=inTwo)
 			usp_input2.cell(row=n_row_input2, column=4, value=n_usps)
-		# if total == 1:
-		# 	n_row_uspOne += 1
-		# 	uspOne.cell(row=n_row_uspOne, column=1, value=inOne)
-		# 	uspOne.cell(row=n_row_uspOne, column=2, value=data.cell(row=n,
-		# 		column=2).value) # ISBN
-		# 	uspOne.cell(row=n_row_uspOne, column=3, value=inTwo)
+			usp_content = parser.usps_parsed()
+			usp_input2.cell(row=n_row_input2, column=5, value=usp_content)
+			
 
 print_date = time.strftime("%d%m%y")
 print_time = time.strftime("%I%M%S")
