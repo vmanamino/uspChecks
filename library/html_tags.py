@@ -1,5 +1,5 @@
 # import re
-from html_parser import uspHtmlParser
+from usp_parser import uspHtmlParser
 
 '''
 filter out one bounded string, i.e. word

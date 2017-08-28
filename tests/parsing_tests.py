@@ -3,7 +3,9 @@ import re
 import sys
 sys.path.append('C:\\Code\\uspChecks\\library')
 from html_tags import tag_content
+from usp_parser import uspHtmlParser
 
+parser = uspHtmlParser()
 
 # target = 3
 
@@ -56,37 +58,61 @@ tag_none = """USP 1
 			USP-3"""
 
 
-
-class isTagTests(unittest.TestCase):	
+# usps = parser.feed(pTag_target)
+# print(parser.output)
+class isUSPTests(unittest.TestCase):	
 	
 	def test_vanilla_One(self):
-		self.assertTrue(len(tag_content(pTag_target)) is 3)
-		self.assertTrue(len(tag_content(divTag_target)) is 3)
-		self.assertTrue(len(tag_content(brTag_target)) is 3)
+		parser.feed(pTag_target)
+		self.assertTrue(len(parser.output) is 3)
+		parser.feed(divTag_target)
+		self.assertTrue(len(parser.output) is 3)
+		parser.feed(brTag_target)
+		self.assertTrue(len(parser.output) is 3)
 
 	def test_vanilla_Two(self):
-		self.assertFalse(len(tag_content(pTag_one_less)) is 3)
-		self.assertFalse(len(tag_content(divTag_one_less)) is 3)
-		self.assertFalse(len(tag_content(brTag_one_less)) is 3)
+		parser.feed(pTag_one_less)
+		self.assertFalse(len(parser.output) is 3)
+		parser.feed(divTag_one_less)
+		self.assertFalse(len(parser.output) is 3)
+		parser.feed(brTag_one_less)
+		self.assertFalse(len(parser.output) is 3)
 
 	def test_vanilla_Three(self):
-		self.assertFalse(len(tag_content(pTag_one_more)) is 3)
-		self.assertFalse(len(tag_content(divTag_one_more)) is 3)
-		self.assertFalse(len(tag_content(brTag_one_more)) is 3)
-
-	def test_vanilla_Four(self):
-		self.assertFalse(len(tag_content(pTag_target)) is not 3)
-		self.assertFalse(len(tag_content(divTag_target)) is not 3)
-		self.assertFalse(len(tag_content(brTag_target)) is not 3)
+		parser.feed(pTag_one_more)
+		self.assertFalse(len(parser.output) is 3)
+		parser.feed(divTag_one_more)
+		self.assertFalse(len(parser.output) is 3)
+		parser.feed(brTag_one_more)
+		self.assertFalse(len(parser.output) is 3)
 
 	# tags wrapped by other tags, well formed HTML
 	def test_swirl_One(self):
-		self.assertTrue(len(tag_content(liTag_divWrapped_target)) is 3)
+		parser.feed(liTag_divWrapped_target)
+		self.assertTrue(len(parser.output) is 3)
 
 	# random tags with no usp content thrown in
 	def test_chunky_One(self):
-		self.assertTrue(len(tag_content(divTag_wrap_target)) is 4)
+		parser.feed(divTag_wrap_target)
+		self.assertTrue(len(parser.output) is 4)
 
+class isTagTests(unittest.TestCase):
+
+	def test_vanilla_One(self):
+		parser.feed(pTag_target)
+		self.assertTrue(len(parser.tags) is 3)
+		parser.feed(divTag_target)
+		self.assertTrue(len(parser.tags) is 3)
+		parser.feed(brTag_target)
+		self.assertTrue(len(parser.tags) is 2)
+
+	def test_swirl_One(self):
+		parser.feed(liTag_divWrapped_target)
+		self.assertTrue(len(parser.tags) is 5)
+
+	def test_chunky_One(self):
+		parser.feed(divTag_wrap_target)
+		self.assertTrue(len(parser.tags) is 10)
 
 def main():
     unittest.main()
