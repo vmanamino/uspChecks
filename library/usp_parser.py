@@ -14,6 +14,7 @@ class uspHtmlParser(HTMLParser):
     def feed(self, data):        
         self.output = []
         self.tags = []
+        
         HTMLParser.feed(self, data)
 
     

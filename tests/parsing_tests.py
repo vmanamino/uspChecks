@@ -47,6 +47,9 @@ Chunky swirls, i.e. wrapped tags with random rags thrown in
 divTag_wrap_target = """<div>USP 1</div><div><br></div><div>USP 2</div><div><br></div><div>USP-3</div><div><br></div><div>USP 4</div>"""
 
 
+empty_str = ''
+empty_null = None 
+
 '''
 Bland USPs, no tags
 currently no tests
@@ -126,6 +129,20 @@ class isContentTests(unittest.TestCase):
 	def test_chunky_One(self):
 		parser.feed(divTag_wrap_target)
 		self.assertTrue(parser.usps_parsed() == 'USP 1 |USP 2 |USP-3 |USP 4')
+
+class isNotUSPTests(unittest.TestCase):
+
+	def test_empty_string(self):
+		parser.feed(empty_str)
+		self.assertTrue(len(parser.output) is 0)
+		self.assertTrue(len(parser.tags) is 0)
+		self.assertTrue(parser.usps_parsed() == '')
+
+	def test_empty_null(self):
+		parser.feed(str(empty_null))		
+		self.assertTrue(len(parser.output) is 1)
+		self.assertTrue(len(parser.tags) is 0)
+		self.assertTrue(parser.usps_parsed() == 'None')
 
 def main():
     unittest.main()
