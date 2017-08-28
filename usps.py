@@ -78,6 +78,7 @@ n_row_input2 = 1
 usp_input2.cell(row=n_row_input2, column=1, value=input1)
 usp_input2.cell(row=n_row_input2, column=2, value="ISBN")
 usp_input2.cell(row=n_row_input2, column=3, value=input2)
+usp_input2.cell(row=n_row_input2, column=4, value="# of HTML USPs")
 
 
 for n in range(2, 10):
@@ -96,20 +97,15 @@ for n in range(2, 10):
 		overview.cell(row=n_row_overview, column=3, value=inTwo)
 		overview.cell(row=n_row_overview, column=4, 
 			value=html_total)	
-		# print(len(parser.tags))
-		# print('row')
-		# print(n)
-		# if n == 3:
-		# 	print(parser.output)
-		# print(inOne)
-		# print(inTwo)
-		# usps = tag_content(inTwo)
-		# total = len(usps)
-		# outsheet_full.cell(row=n_row_full, column=1, value=inOne)		
-		# outsheet_full.cell(row=n_row_full, column=2, value=data.cell(row=n, 
-		# 	column=2).value) # ISBN
-		# outsheet_full.cell(row=n_row_full, column=3, value=inTwo)
-		# outsheet_full.cell(row=n_row_full, column=4, value=total)
+		
+		if html_total >= 1:
+			n_usps = len(parser.output)
+			n_row_input2 += 1
+			usp_input2.cell(row=n_row_input2, column=1, value=inOne)
+			usp_input2.cell(row=n_row_input2, column=2, value=data.cell(row=n,
+				column=2).value) # ISBN
+			usp_input2.cell(row=n_row_input2, column=3, value=inTwo)
+			usp_input2.cell(row=n_row_input2, column=4, value=n_usps)
 		# if total == 1:
 		# 	n_row_uspOne += 1
 		# 	uspOne.cell(row=n_row_uspOne, column=1, value=inOne)
