@@ -52,6 +52,18 @@ col_num_in_one = column_number(column_in_one)
 input2 = sys.argv[2]
 column_in_two = headers[input2]
 col_num_in_two = column_number(column_in_two)
+isbn = headers['isbn']
+isbn_col = column_number(isbn)
+prod_cat = headers['product_category']
+prod_cat_col = column_number(prod_cat)
+market_us = headers['marketing_class_us']
+market_us_col = column_number(market_us)
+market_row = headers['marketing_class_row']
+market_row_col = column_number(market_row)
+market_dach = headers['marketing_class_dach']
+market_dach_col = column_number(market_dach)
+
+
 
 # number of rows
 count = data.max_row
@@ -71,6 +83,11 @@ overview.cell(row=n_row_overview, column=1, value=input1)
 overview.cell(row=n_row_overview, column=2, value="ISBN")
 overview.cell(row=n_row_overview, column=3, value=input2)
 overview.cell(row=n_row_overview, column=4, value="# HTML Tags")
+overview.cell(row=n_row_overview, column=5, value="Product Category")
+overview.cell(row=n_row_overview, column=6, value="Marketing US")
+overview.cell(row=n_row_overview, column=7, value="Marketing ROW")
+overview.cell(row=n_row_overview, column=8, value="Marketing DACH")
+
 
 
 # 1 usp sheet
@@ -78,8 +95,9 @@ n_row_input2 = 1
 usp_input2.cell(row=n_row_input2, column=1, value=input1)
 usp_input2.cell(row=n_row_input2, column=2, value="ISBN")
 usp_input2.cell(row=n_row_input2, column=3, value=input2)
-usp_input2.cell(row=n_row_input2, column=4, value="# of HTML USPs")
-usp_input2.cell(row=n_row_input2, column=5, value="USP content")
+usp_input2.cell(row=n_row_input2, column=4, value="# of HTML tags")
+usp_input2.cell(row=n_row_input2, column=5, value="# of HTML-USPs")
+usp_input2.cell(row=n_row_input2, column=6, value="USP content")
 
 
 for n in range(2, count):
@@ -94,21 +112,31 @@ for n in range(2, count):
 		html_total = len(parser.tags)
 		overview.cell(row=n_row_overview, column=1, value=inOne)
 		overview.cell(row=n_row_overview, column=2, value=data.cell(row=n, 
-			column=2).value) # ISBN
+			column=isbn_col).value) # ISBN
 		overview.cell(row=n_row_overview, column=3, value=inTwo)
 		overview.cell(row=n_row_overview, column=4, 
-			value=html_total)	
+			value=html_total)
+		overview.cell(row=n_row_overview, column=5, value=data.cell(row=n, 
+			column=9).value)
+		overview.cell(row=n_row_overview, column=6, value=data.cell(row=n, 
+			column=market_us_col).value)
+		overview.cell(row=n_row_overview, column=7, value=data.cell(row=n, 
+			column=market_row_col).value)
+		overview.cell(row=n_row_overview, column=8, value=data.cell(row=n, 
+			column=market_dach_col).value)
+
 		
 		if html_total >= 1:
 			n_usps = len(parser.output)
 			n_row_input2 += 1
 			usp_input2.cell(row=n_row_input2, column=1, value=inOne)
 			usp_input2.cell(row=n_row_input2, column=2, value=data.cell(row=n,
-				column=2).value) # ISBN
+				column=isbn_col).value) # ISBN
 			usp_input2.cell(row=n_row_input2, column=3, value=inTwo)
-			usp_input2.cell(row=n_row_input2, column=4, value=n_usps)
+			usp_input2.cell(row=n_row_input2, column=4, value=html_total)
+			usp_input2.cell(row=n_row_input2, column=5, value=n_usps)
 			usp_content = parser.usps_parsed()
-			usp_input2.cell(row=n_row_input2, column=5, value=usp_content)
+			usp_input2.cell(row=n_row_input2, column=6, value=usp_content)
 			
 
 print_date = time.strftime("%d%m%y")
