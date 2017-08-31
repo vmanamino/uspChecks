@@ -16,7 +16,6 @@ class uspHtmlParser(HTMLParser):
         self.tags = []
         
         HTMLParser.feed(self, data)
-
     
     def usps_parsed(self):
         count = 0
@@ -41,6 +40,7 @@ class uspHtmlParser(HTMLParser):
 # print(parser.output)
 # print(len(parser.tags))
 # usp = usp.USP()
+
 
 
 

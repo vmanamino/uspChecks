@@ -99,12 +99,12 @@ usp_input2.cell(row=n_row_input2, column=4, value="# of HTML tags")
 usp_input2.cell(row=n_row_input2, column=5, value="# of HTML-USPs")
 usp_input2.cell(row=n_row_input2, column=6, value="USP content")
 
+parser = uspHtmlParser()
 
-for n in range(2, count):
+for n in range(2, 100):
 	project_prelim = data.cell(row=n, column=16).value
 	p = re.compile(r'\bpreliminary\b')
-	if not p.search(project_prelim):
-		parser = uspHtmlParser()
+	if not p.search(project_prelim):		
 		n_row_overview += 1
 		inOne = data.cell(row=n, column=col_num_in_one).value
 		inTwo = data.cell(row=n, column=col_num_in_two).value		
