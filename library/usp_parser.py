@@ -5,7 +5,7 @@ class uspHtmlParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)  
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag, attrs):        
     	self.tags.append(tag)
         	       
     def handle_data(self, data):
@@ -26,6 +26,8 @@ class uspHtmlParser(HTMLParser):
             if count < len(self.output):
                 stri += ' |'
         return stri
+
+# special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p>"
         
 # divTag = '<div>usp1</div><div>usp2</div><div>usp3</div>'
 # divTag2 = '<div>usp1</div>'
@@ -34,12 +36,15 @@ class uspHtmlParser(HTMLParser):
 # divTag_wrap = """<div>USP 1</div><div><br></div><div>USP 2</div><div><br></div><div>USP-3</div><div><br></div><div>USP 4</div>"""
 # none = """USP 1  USP2  USP-3"""
 # parser = uspHtmlParser()
-# parser.feed(divTag_wrap)
+# parser.feed(special_tags)
 # print(parser.usps_parsed())
+# print(parser.tags)
+# print(parser.output)
 # data = parser.feed(none)
 # print(parser.output)
 # print(len(parser.tags))
 # usp = usp.USP()
+
 
 
 
