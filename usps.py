@@ -83,10 +83,11 @@ overview.cell(row=n_row_overview, column=1, value=input1)
 overview.cell(row=n_row_overview, column=2, value="ISBN")
 overview.cell(row=n_row_overview, column=3, value=input2)
 overview.cell(row=n_row_overview, column=4, value="# HTML Tags")
-overview.cell(row=n_row_overview, column=5, value="Product Category")
-overview.cell(row=n_row_overview, column=6, value="Marketing US")
-overview.cell(row=n_row_overview, column=7, value="Marketing ROW")
-overview.cell(row=n_row_overview, column=8, value="Marketing DACH")
+overview.cell(row=n_row_overview, column=5, value="HTML Tags")
+overview.cell(row=n_row_overview, column=6, value="Product Category")
+overview.cell(row=n_row_overview, column=7, value="Marketing US")
+overview.cell(row=n_row_overview, column=8, value="Marketing ROW")
+overview.cell(row=n_row_overview, column=9, value="Marketing DACH")
 
 
 
@@ -98,10 +99,14 @@ usp_input2.cell(row=n_row_input2, column=3, value=input2)
 usp_input2.cell(row=n_row_input2, column=4, value="# of HTML tags")
 usp_input2.cell(row=n_row_input2, column=5, value="# of HTML-USPs")
 usp_input2.cell(row=n_row_input2, column=6, value="USP content")
+usp_input2.cell(row=n_row_input2, column=7, value="Word Count")
+usp_input2.cell(row=n_row_input2, column=8, value="Less than 3 Words")
+usp_input2.cell(row=n_row_input2, column=9, value="More than 15 Words")
+
 
 parser = uspHtmlParser()
 
-for n in range(2, 100):
+for n in range(2, 10):
 	project_prelim = data.cell(row=n, column=16).value
 	p = re.compile(r'\bpreliminary\b')
 	if not p.search(project_prelim):		
@@ -116,13 +121,15 @@ for n in range(2, 100):
 		overview.cell(row=n_row_overview, column=3, value=inTwo)
 		overview.cell(row=n_row_overview, column=4, 
 			value=html_total)
-		overview.cell(row=n_row_overview, column=5, value=data.cell(row=n, 
-			column=9).value)
+		overview.cell(row=n_row_overview, column=5, 
+			value=', '.join(parser.tags))
 		overview.cell(row=n_row_overview, column=6, value=data.cell(row=n, 
-			column=market_us_col).value)
+			column=9).value)
 		overview.cell(row=n_row_overview, column=7, value=data.cell(row=n, 
-			column=market_row_col).value)
+			column=market_us_col).value)
 		overview.cell(row=n_row_overview, column=8, value=data.cell(row=n, 
+			column=market_row_col).value)
+		overview.cell(row=n_row_overview, column=9, value=data.cell(row=n, 
 			column=market_dach_col).value)
 
 		
@@ -137,11 +144,26 @@ for n in range(2, 100):
 			usp_input2.cell(row=n_row_input2, column=5, value=n_usps)
 			usp_content = parser.usps_parsed()
 			usp_input2.cell(row=n_row_input2, column=6, value=usp_content)
+			word_count = parser.word_count_summary()
+			usp_input2.cell(row=n_row_input2, column=7, value=', '.join(str(x) for x in word_count))
+			flag = False
+			for i in word_count:
+				if i < 3:
+					flag = True
+					break
+			usp_input2.cell(row=n_row_input2, column=8, value=flag)
+			flag = False
+			for i in word_count:
+				if i > 15:
+					flag = True
+					break
+			usp_input2.cell(row=n_row_input2, column=9, value=flag)
+
 			
 
 print_date = time.strftime("%d%m%y")
 print_time = time.strftime("%I%M%S")
 
-buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'.xlsx')
+buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'TEST.xlsx')
 
 print ('The script took {0} seconds !'.format(time.time() - startTime))
