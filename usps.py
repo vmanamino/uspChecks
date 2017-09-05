@@ -112,7 +112,9 @@ for n in range(2, 10):
 	if not p.search(project_prelim):		
 		n_row_overview += 1
 		inOne = data.cell(row=n, column=col_num_in_one).value
-		inTwo = data.cell(row=n, column=col_num_in_two).value		
+		inTwo = data.cell(row=n, column=col_num_in_two).value
+		print('overview inTwo', end='')
+		print(inTwo)		
 		parser.feed(inTwo)
 		html_total = len(parser.tags)
 		overview.cell(row=n_row_overview, column=1, value=inOne)

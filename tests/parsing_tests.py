@@ -7,8 +7,6 @@ from usp_parser import uspHtmlParser
 
 parser = uspHtmlParser()
 
-# target = 3
-
 '''
 Vanilla USPs
 '''
@@ -45,6 +43,14 @@ liTag_divWrapped_target = """<div><ul><li>USP 1</li><li>USP 2</li><li>USP-3</li>
 Chunky swirls, i.e. wrapped tags with random rags thrown in
 '''
 divTag_wrap_target = """<div>USP 1</div><div><br></div><div>USP 2</div><div><br></div><div>USP-3</div><div><br></div><div>USP 4</div>"""
+
+'''
+Squirrelly tags, i.e. tags with bold, italics, and emphasis tags
+'''
+special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you</p>"
+special_tags2 = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p>"
+special_tags3 = "<p><b>In der Krise lesbar</b>: Wissenschaftlich fundiert und verständlich formuliert</p><p><b>Erfahrenes Autorenteam</b>: Beteiligt Praktikerin, Betroffene, Wissenschaftler</p><p><b>Beratung</b>: Kurze Übersicht mit praktischen Hinweisen</p><p><b>Menschlich</b>: Nicht medizinisch auf Krebsarten bezogen, sondern auf die Ressource Menschlichkeit</p>"
+special_tags4 = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p><b>Erfahrenes Autorenteam</b>: Beteiligt Praktikerin, Betroffene, Wissenschaftler</p><p><em>Beratung</em>: Kurze Übersicht mit praktischen Hinweisen</p>"
 
 
 empty_str = ''
@@ -97,6 +103,25 @@ class isUSPTests(unittest.TestCase):
 	def test_chunky_One(self):
 		parser.feed(divTag_wrap_target)
 		self.assertTrue(len(parser.output) is 4)
+
+	def test_squirrelly_One(self):
+		parser.feed(special_tags)
+		self.assertTrue(len(parser.output) is 2)
+
+	def test_squirrelly_Two(self):
+		parser.feed(special_tags2)
+		self.assertTrue(len(parser.output) is 2)
+
+	def test_squirrelly_Three(self):
+		parser.feed(special_tags3)
+		self.assertTrue(len(parser.output) is 4)
+
+	def test_squirrelly_Four(self):
+		parser.feed(special_tags4)
+		self.assertTrue(len(parser.output) is 3)
+
+
+
 
 class isTagTests(unittest.TestCase):
 
