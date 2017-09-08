@@ -76,6 +76,9 @@ class uspHtmlParser(HTMLParser):
             count += 1
             stri += usp
             if count < len(self.output):
+                # here check for hidden characters such as newline and space.  
+                # remove those usps from the output list
+                # at the same time, put out the string of parsed usps
                 stri += ' |'
         return stri
 
