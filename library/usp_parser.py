@@ -1,4 +1,5 @@
 from html.parser import HTMLParser
+import re
 
 class uspHtmlParser(HTMLParser):
 
@@ -72,19 +73,37 @@ class uspHtmlParser(HTMLParser):
     def usps_parsed(self):
         count = 0
         stri = ''
+        usps_parsed = []
+        p_newline = re.compile('^\n+$')
         for usp in self.output:
+            if not re.findall(p_newline, usp):
+                usps_parsed.append(usp)               
+        return usps_parsed        
+            # count += 1
+            # stri += usp
+            # if count < output_length:
+            #     # here check for hidden characters such as newline and space.  
+            #     # remove those usps from the output list
+            #     # at the same time, put out the string of parsed usps
+            #     stri += ' |'
+        # return stri
+    @staticmethod
+    def usps_as_string(usps_parsed):
+        stri = ''
+        count = 0
+        length = len(usps_parsed)
+        for usp in usps_parsed:
             count += 1
             stri += usp
-            if count < len(self.output):
-                # here check for hidden characters such as newline and space.  
-                # remove those usps from the output list
-                # at the same time, put out the string of parsed usps
+            if count < length:
                 stri += ' |'
         return stri
 
-    def word_count_summary(self):
+
+    @staticmethod
+    def word_count_summary(usps_parsed):
         count_list = []
-        for each_usp in self.output:
+        for each_usp in usps_parsed:
             usp_length = len(each_usp.split())
             count_list.append(usp_length)
         return count_list
@@ -118,13 +137,25 @@ class uspHtmlParser(HTMLParser):
 # print(parser.usps_parsed())
 # print(parser.tags)
 # print(parser.output)
+# newlines = """<p>Ergänzende Aufgabensammlung zum Werk Technische Mechanik 1, 2, 3 </p><p>Die meisten Beispiele entsprechen in Art und Umfang den Aufgaben, die in Diplomvorprüfungen zu den Fächern Technische Mechanik 1 bis 3 gestellt werden </p>
 
+# <p>Besonders wertvoll für Studierende, die sich auf die jeweiligen Prüfungen vorbereiten </p>
 
+# Das Aufgabenbuch zu den Bestseller-Lehrbüchern der Technischen Mechanik"""
 
+# print(newlines)
 
+# parser = uspHtmlParser()
 
+# parser.feed(newlines)
 
+# print(len(parser.output))
 
+# usps = parser.usps_parsed()
 
+# print(usps)
+# print(len(usps))
 
+# print(parser.usps_as_string(usps))
 
+# print(parser.word_count_summary(usps))

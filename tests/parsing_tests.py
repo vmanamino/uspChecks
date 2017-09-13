@@ -66,6 +66,18 @@ tag_none = """USP 1
 			USP-3"""
 
 
+'''
+newlines
+'''
+newlines = """<p>Ergänzende Aufgabensammlung zum Werk Technische Mechanik 1, 2, 3 </p>
+
+<p>Die meisten Beispiele entsprechen in Art und Umfang den Aufgaben, die in Diplomvorprüfungen zu den Fächern Technische Mechanik 1 bis 3 gestellt werden </p>
+
+<p>Besonders wertvoll für Studierende, die sich auf die jeweiligen Prüfungen vorbereiten </p>
+
+Das Aufgabenbuch zu den Bestseller-Lehrbüchern der Technischen Mechanik"""
+
+
 # usps = parser.feed(pTag_target)
 # print(parser.output)
 class isUSPTests(unittest.TestCase):	

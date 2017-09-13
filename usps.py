@@ -106,15 +106,15 @@ usp_input2.cell(row=n_row_input2, column=9, value="More than 15 Words")
 
 parser = uspHtmlParser()
 
-for n in range(2, 10):
+for n in range(2, count):
 	project_prelim = data.cell(row=n, column=16).value
 	p = re.compile(r'\bpreliminary\b')
 	if not p.search(project_prelim):		
 		n_row_overview += 1
 		inOne = data.cell(row=n, column=col_num_in_one).value
 		inTwo = data.cell(row=n, column=col_num_in_two).value
-		print('overview inTwo', end='')
-		print(inTwo)		
+		# print('overview inTwo', end='')
+		# print(inTwo)		
 		parser.feed(inTwo)
 		html_total = len(parser.tags)
 		overview.cell(row=n_row_overview, column=1, value=inOne)
@@ -136,17 +136,18 @@ for n in range(2, 10):
 
 		
 		if html_total >= 1:
-			n_usps = len(parser.output)
+			usps_parsed = parser.usps_parsed()
+			n_usps = len(usps_parsed)
 			n_row_input2 += 1
 			usp_input2.cell(row=n_row_input2, column=1, value=inOne)
 			usp_input2.cell(row=n_row_input2, column=2, value=data.cell(row=n,
 				column=isbn_col).value) # ISBN
 			usp_input2.cell(row=n_row_input2, column=3, value=inTwo)
 			usp_input2.cell(row=n_row_input2, column=4, value=html_total)
-			usp_input2.cell(row=n_row_input2, column=5, value=n_usps)
-			usp_content = parser.usps_parsed()
+			usp_input2.cell(row=n_row_input2, column=5, value=n_usps)			
+			usp_content = parser.usps_as_string(usps_parsed)
 			usp_input2.cell(row=n_row_input2, column=6, value=usp_content)
-			word_count = parser.word_count_summary()
+			word_count = parser.word_count_summary(usps_parsed)
 			usp_input2.cell(row=n_row_input2, column=7, value=', '.join(str(x) for x in word_count))
 			flag = False
 			for i in word_count:
@@ -166,6 +167,6 @@ for n in range(2, 10):
 print_date = time.strftime("%d%m%y")
 print_time = time.strftime("%I%M%S")
 
-buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'TEST.xlsx')
+buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'.xlsx')
 
 print ('The script took {0} seconds !'.format(time.time() - startTime))
