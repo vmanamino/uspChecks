@@ -174,6 +174,6 @@ for n in range(2, count):
 print_date = time.strftime("%d%m%y")
 print_time = time.strftime("%I%M%S")
 
-buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'TEST.xlsx')
+buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'.xlsx')
 
 print ('The script took {0} seconds !'.format(time.time() - startTime))
