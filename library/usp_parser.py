@@ -74,9 +74,10 @@ class uspHtmlParser(HTMLParser):
         count = 0
         stri = ''
         usps_parsed = []
-        p_newline = re.compile('^\n+$')
+        # p_newline = re.compile('^\n+$')
+        p_whitespace = re.compile('^\s+$')   
         for usp in self.output:
-            if not re.findall(p_newline, usp):
+            if not re.findall(p_whitespace, usp):
                 usps_parsed.append(usp)               
         return usps_parsed        
             # count += 1
@@ -137,13 +138,15 @@ class uspHtmlParser(HTMLParser):
 # print(parser.usps_parsed())
 # print(parser.tags)
 # print(parser.output)
+
 # newlines = """<p>Ergänzende Aufgabensammlung zum Werk Technische Mechanik 1, 2, 3 </p><p>Die meisten Beispiele entsprechen in Art und Umfang den Aufgaben, die in Diplomvorprüfungen zu den Fächern Technische Mechanik 1 bis 3 gestellt werden </p>
 
 # <p>Besonders wertvoll für Studierende, die sich auf die jeweiligen Prüfungen vorbereiten </p>
 
 # Das Aufgabenbuch zu den Bestseller-Lehrbüchern der Technischen Mechanik"""
 
-# print(newlines)
+
+
 
 # parser = uspHtmlParser()
 
@@ -159,3 +162,12 @@ class uspHtmlParser(HTMLParser):
 # print(parser.usps_as_string(usps))
 
 # print(parser.word_count_summary(usps))
+
+# nother hidden one
+# hidden2 ="""<p>Implements a novel integrated method for detecting the wellness of individuals</p><p>Presents new developments and advancements in wireless sensors for the field of ambient assisted living</p><p> </p><p>Examines emerging applications in a broad range of fields</p>
+
+# <p>&nbsp;</p>"""
+
+# hidden3 = """<p>Presents exact analytical solutions for second order differential equations of any order of nonlinearity, with many examples</p><p>Features original approximate solving methods for strong nonlinear differential equations</p><p> </p><p>Also considers strong nonlinear oscillators with one and two degrees of freedom, but also continuous vibrating systems</p><p>Stresses the potential for applications of the method described in engineering</p><p>Contains examples for better learning</p><p>Supplies the mathematical basics in the supplement&nbsp;</p>"""
+
+# print(hidden3)

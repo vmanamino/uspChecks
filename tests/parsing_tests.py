@@ -69,14 +69,19 @@ tag_none = """USP 1
 '''
 newlines
 '''
-newlines = """<p>Ergänzende Aufgabensammlung zum Werk Technische Mechanik 1, 2, 3 </p>
+newlines = """<p>USP 1 </p>
 
-<p>Die meisten Beispiele entsprechen in Art und Umfang den Aufgaben, die in Diplomvorprüfungen zu den Fächern Technische Mechanik 1 bis 3 gestellt werden </p>
+<p>USP 2 </p>
 
-<p>Besonders wertvoll für Studierende, die sich auf die jeweiligen Prüfungen vorbereiten </p>
+<p>USP 3 </p>
 
-Das Aufgabenbuch zu den Bestseller-Lehrbüchern der Technischen Mechanik"""
+USP 4"""
 
+whitespace1 = """<p>USP 1</p><p>USP 2</p><p> </p><p>USP 3</p>
+
+<p>&nbsp;</p>"""
+
+whitespace2 = """<p>USP 1</p><p>USP 2</p><p> </p><p>USP 3</p><p>USP 4</p><p>USP 4&nbsp;</p>"""
 
 # usps = parser.feed(pTag_target)
 # print(parser.output)
@@ -134,7 +139,6 @@ class isUSPTests(unittest.TestCase):
 
 
 
-
 class isTagTests(unittest.TestCase):
 
 	def test_vanilla_One(self):
@@ -156,30 +160,44 @@ class isTagTests(unittest.TestCase):
 class isContentTests(unittest.TestCase):
 
 	def test_vanilla_One(self):
-		parser.feed(pTag_target)		
-		self.assertTrue(parser.usps_parsed() == 'USP 1 |USP 2 |USP-3')
+		parser.feed(pTag_target)			
+		self.assertTrue(parser.usps_parsed() == ['USP 1', 'USP 2', 'USP-3'])
 
 	def test_swirl_One(self):
 		parser.feed(liTag_divWrapped_target)
-		self.assertTrue(parser.usps_parsed() == 'USP 1 |USP 2 |USP-3')
+		self.assertTrue(parser.usps_parsed() == ['USP 1', 'USP 2', 'USP-3'])
 
 	def test_chunky_One(self):
 		parser.feed(divTag_wrap_target)
-		self.assertTrue(parser.usps_parsed() == 'USP 1 |USP 2 |USP-3 |USP 4')
+		self.assertTrue(parser.usps_parsed() == ['USP 1', 'USP 2', 'USP-3', 'USP 4'])
+
+	def test_whitespace_One(self):
+		parser.feed(newlines)
+		# print(parser.usps_parsed())
+		self.assertTrue(parser.usps_parsed() == ['USP 1 ', 'USP 2 ', 'USP 3 ', '\n\nUSP 4'])
+
+	def test_whitespace_Two(self):
+		parser.feed(whitespace1)
+		self.assertTrue(parser.usps_parsed() == ['USP 1', 'USP 2', 'USP 3'])
+
+	def test_whitespace_Three(self):
+		parser.feed(whitespace2)
+		print(parser.usps_parsed())
+		self.assertTrue(parser.usps_parsed() == ['USP 1', 'USP 2', 'USP 3', 'USP 4', 'USP 4\xa0'] )
 
 class isNotUSPTests(unittest.TestCase):
 
 	def test_empty_string(self):
-		parser.feed(empty_str)
+		parser.feed(empty_str)		
 		self.assertTrue(len(parser.output) is 0)
 		self.assertTrue(len(parser.tags) is 0)
-		self.assertTrue(parser.usps_parsed() == '')
+		self.assertTrue(parser.usps_parsed() == [])
 
 	def test_empty_null(self):
 		parser.feed(str(empty_null))		
 		self.assertTrue(len(parser.output) is 1)
 		self.assertTrue(len(parser.tags) is 0)
-		self.assertTrue(parser.usps_parsed() == 'None')
+		self.assertTrue(parser.usps_parsed() == ['None'])
 
 def main():
     unittest.main()

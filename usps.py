@@ -102,6 +102,8 @@ usp_input2.cell(row=n_row_input2, column=6, value="USP content")
 usp_input2.cell(row=n_row_input2, column=7, value="Word Count")
 usp_input2.cell(row=n_row_input2, column=8, value="Less than 3 Words")
 usp_input2.cell(row=n_row_input2, column=9, value="More than 15 Words")
+usp_input2.cell(row=n_row_input2, column=10, value="O words")
+
 
 
 parser = uspHtmlParser()
@@ -161,12 +163,17 @@ for n in range(2, count):
 					flag = True
 					break
 			usp_input2.cell(row=n_row_input2, column=9, value=flag)
-
+			flag = False
+			for i in word_count:
+				if i == 0:
+					flag = True
+					break
+			usp_input2.cell(row=n_row_input2, column=10, value=flag)
 			
 
 print_date = time.strftime("%d%m%y")
 print_time = time.strftime("%I%M%S")
 
-buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'.xlsx')
+buk.save('results/'+file_stem+'_'+input2+'_'+print_date+'_'+print_time+'TEST.xlsx')
 
 print ('The script took {0} seconds !'.format(time.time() - startTime))
