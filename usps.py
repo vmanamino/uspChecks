@@ -103,6 +103,8 @@ usp_input2.cell(row=n_row_input2, column=7, value="Word Count")
 usp_input2.cell(row=n_row_input2, column=8, value="Less than 3 Words")
 usp_input2.cell(row=n_row_input2, column=9, value="More than 15 Words")
 usp_input2.cell(row=n_row_input2, column=10, value="O words")
+usp_input2.cell(row=n_row_input2, column=11, value="1 lowercase word")
+usp_input2.cell(row=n_row_input2, column=12, value="the lowercase word")
 
 
 
@@ -149,7 +151,7 @@ for n in range(2, count):
 			usp_input2.cell(row=n_row_input2, column=5, value=n_usps)			
 			usp_content = parser.usps_as_string(usps_parsed)
 			usp_input2.cell(row=n_row_input2, column=6, value=usp_content)
-			word_count = parser.word_count_summary(usps_parsed)
+			word_count, one_word_lowercase = parser.word_count_summary(usps_parsed)
 			usp_input2.cell(row=n_row_input2, column=7, value=', '.join(str(x) for x in word_count))
 			flag = False
 			for i in word_count:
@@ -169,6 +171,17 @@ for n in range(2, count):
 					flag = True
 					break
 			usp_input2.cell(row=n_row_input2, column=10, value=flag)
+			flag = False
+			if one_word_lowercase:
+				flag = True
+				word = one_word_lowercase[0]
+				usp_input2.cell(row=n_row_input2, column=12, value=word)
+			# for i in word_count:
+			# 	if i == 1:
+			# 		flag = True
+			# 		break
+			usp_input2.cell(row=n_row_input2, column=11, value=flag)
+
 			
 
 print_date = time.strftime("%d%m%y")

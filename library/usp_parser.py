@@ -14,7 +14,7 @@ class uspHtmlParser(HTMLParser):
         
         # self.pre_data = False
         
-        if tag == 'b' or tag == 'i' or tag == 'em':
+        if tag == 'b' or tag == 'i' or tag == 'em' or tag == 'sup':
             # print('inside startag first condition', end=' ')
             # print(tag)                       
             self.flag = True
@@ -104,10 +104,13 @@ class uspHtmlParser(HTMLParser):
     @staticmethod
     def word_count_summary(usps_parsed):
         count_list = []
+        one_count_lowercase = []
         for each_usp in usps_parsed:
             usp_length = len(each_usp.split())
             count_list.append(usp_length)
-        return count_list
+            if usp_length is 1 and each_usp.islower():
+                one_count_lowercase.append(each_usp)
+        return count_list, one_count_lowercase
 
 # special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you</p>"
 # special_tags2 = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p>"
@@ -171,3 +174,12 @@ class uspHtmlParser(HTMLParser):
 # hidden3 = """<p>Presents exact analytical solutions for second order differential equations of any order of nonlinearity, with many examples</p><p>Features original approximate solving methods for strong nonlinear differential equations</p><p> </p><p>Also considers strong nonlinear oscillators with one and two degrees of freedom, but also continuous vibrating systems</p><p>Stresses the potential for applications of the method described in engineering</p><p>Contains examples for better learning</p><p>Supplies the mathematical basics in the supplement&nbsp;</p>"""
 
 # print(hidden3)
+
+# single_word = "<p>Aktuell</p><p>Innovativ </p><p>Kompakt</p>"
+
+# single_word = "<p>Includes clear explanations of fundamentals for correct application</p><p>Contains key notes, experiences and implementation advice from</p><p>experts</p><p>Covers relevant and current topics including Drug Metabolizing Enzymes and Transporters</p>"
+
+# parser = uspHtmlParser()
+# parser.feed(single_word)
+# usps_parsed = parser.usps_parsed()
+# print(parser.word_count_summary(usps_parsed))
