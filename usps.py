@@ -68,13 +68,18 @@ market_dach_col = column_number(market_dach)
 # number of rows
 count = data.max_row
 
+# add one for range operator
+count += 1
+
 buk = Workbook()
 
 overview = buk.active
 overview.title = 'usp html'
 
-# create sheet for 1 usp
-usp_input2 = buk.create_sheet(input2)
+# more than one usp of particular type, input 2 from cmd line
+# one for german, the other for english
+usp_input2_DE = buk.create_sheet(input2+'_DE')
+usp_input2_EN = buk.create_sheet(input2+'_EN')
 
 # name the output headers
 # make this dynamic
@@ -91,20 +96,36 @@ overview.cell(row=n_row_overview, column=9, value="Marketing DACH")
 
 
 
-# 1 usp sheet
 n_row_input2 = 1
-usp_input2.cell(row=n_row_input2, column=1, value=input1)
-usp_input2.cell(row=n_row_input2, column=2, value="ISBN")
-usp_input2.cell(row=n_row_input2, column=3, value=input2)
-usp_input2.cell(row=n_row_input2, column=4, value="# of HTML tags")
-usp_input2.cell(row=n_row_input2, column=5, value="# of HTML-USPs")
-usp_input2.cell(row=n_row_input2, column=6, value="USP content")
-usp_input2.cell(row=n_row_input2, column=7, value="Word Count")
-usp_input2.cell(row=n_row_input2, column=8, value="Less than 3 Words")
-usp_input2.cell(row=n_row_input2, column=9, value="More than 15 Words")
-usp_input2.cell(row=n_row_input2, column=10, value="O words")
-usp_input2.cell(row=n_row_input2, column=11, value="1 lowercase word")
-usp_input2.cell(row=n_row_input2, column=12, value="the lowercase word")
+# german
+n_row_de = 1 # headers
+usp_input2_DE.cell(row=n_row_de, column=1, value=input1)
+usp_input2_DE.cell(row=n_row_de, column=2, value="ISBN")
+usp_input2_DE.cell(row=n_row_de, column=3, value=input2)
+usp_input2_DE.cell(row=n_row_de, column=4, value="# of HTML tags")
+usp_input2_DE.cell(row=n_row_de, column=5, value="# of HTML-USPs")
+usp_input2_DE.cell(row=n_row_de, column=6, value="USP content")
+usp_input2_DE.cell(row=n_row_de, column=7, value="Word Count")
+usp_input2_DE.cell(row=n_row_de, column=8, value="Less than 3 Words")
+usp_input2_DE.cell(row=n_row_de, column=9, value="More than 15 Words")
+usp_input2_DE.cell(row=n_row_de, column=10, value="O words")
+usp_input2_DE.cell(row=n_row_de, column=11, value="1 lowercase word")
+usp_input2_DE.cell(row=n_row_de, column=12, value="the lowercase word")
+
+# english
+n_row_en = 1 # headers
+usp_input2_EN.cell(row=n_row_en, column=1, value=input1)
+usp_input2_EN.cell(row=n_row_en, column=2, value="ISBN")
+usp_input2_EN.cell(row=n_row_en, column=3, value=input2)
+usp_input2_EN.cell(row=n_row_en, column=4, value="# of HTML tags")
+usp_input2_EN.cell(row=n_row_en, column=5, value="# of HTML-USPs")
+usp_input2_EN.cell(row=n_row_en, column=6, value="USP content")
+usp_input2_EN.cell(row=n_row_en, column=7, value="Word Count")
+usp_input2_EN.cell(row=n_row_en, column=8, value="Less than 3 Words")
+usp_input2_EN.cell(row=n_row_en, column=9, value="More than 15 Words")
+usp_input2_EN.cell(row=n_row_en, column=10, value="O words")
+usp_input2_EN.cell(row=n_row_en, column=11, value="1 lowercase word")
+usp_input2_EN.cell(row=n_row_en, column=12, value="the lowercase word")
 
 
 
@@ -113,8 +134,8 @@ parser = uspHtmlParser()
 for n in range(2, count):
 	project_prelim = data.cell(row=n, column=16).value
 	p = re.compile(r'\bpreliminary\b')
-	if not p.search(project_prelim):		
-		n_row_overview += 1
+	if not p.search(project_prelim):
+		n_row_overview += 1		
 		inOne = data.cell(row=n, column=col_num_in_one).value
 		inTwo = data.cell(row=n, column=col_num_in_two).value
 		# print('overview inTwo', end='')
@@ -140,47 +161,95 @@ for n in range(2, count):
 
 		
 		if html_total >= 1:
-			usps_parsed = parser.usps_parsed()
-			n_usps = len(usps_parsed)
-			n_row_input2 += 1
-			usp_input2.cell(row=n_row_input2, column=1, value=inOne)
-			usp_input2.cell(row=n_row_input2, column=2, value=data.cell(row=n,
-				column=isbn_col).value) # ISBN
-			usp_input2.cell(row=n_row_input2, column=3, value=inTwo)
-			usp_input2.cell(row=n_row_input2, column=4, value=html_total)
-			usp_input2.cell(row=n_row_input2, column=5, value=n_usps)			
-			usp_content = parser.usps_as_string(usps_parsed)
-			usp_input2.cell(row=n_row_input2, column=6, value=usp_content)
-			word_count, one_word_lowercase = parser.word_count_summary(usps_parsed)
-			usp_input2.cell(row=n_row_input2, column=7, value=', '.join(str(x) for x in word_count))
-			flag = False
-			for i in word_count:
-				if i < 3:
-					flag = True
-					break
-			usp_input2.cell(row=n_row_input2, column=8, value=flag)
-			flag = False
-			for i in word_count:
-				if i > 15:
-					flag = True
-					break
-			usp_input2.cell(row=n_row_input2, column=9, value=flag)
-			flag = False
-			for i in word_count:
-				if i == 0:
-					flag = True
-					break
-			usp_input2.cell(row=n_row_input2, column=10, value=flag)
-			flag = False
-			if one_word_lowercase:
-				flag = True
-				word = one_word_lowercase[0]
-				usp_input2.cell(row=n_row_input2, column=12, value=word)
-			# for i in word_count:
-			# 	if i == 1:
-			# 		flag = True
-			# 		break
-			usp_input2.cell(row=n_row_input2, column=11, value=flag)
+			langs = data.cell(row=n, column=4).value
+			main_lang = langs.split()[0]
+
+			if main_lang == 'EN' or main_lang == 'DE':
+				usps_parsed = parser.usps_parsed()
+				n_usps = len(usps_parsed)
+				# n_row_input2 += 1				
+
+				if main_lang == 'EN':
+					n_row_en += 1		
+					usp_input2_EN.cell(row=n_row_en, column=1, value=inOne)
+					usp_input2_EN.cell(row=n_row_en, column=2, value=data.cell(row=n,
+						column=isbn_col).value) # ISBN
+					usp_input2_EN.cell(row=n_row_en, column=3, value=inTwo)
+					usp_input2_EN.cell(row=n_row_en, column=4, value=html_total)
+					usp_input2_EN.cell(row=n_row_en, column=5, value=n_usps)			
+					usp_content = parser.usps_as_string(usps_parsed)
+					usp_input2_EN.cell(row=n_row_en, column=6, value=usp_content)
+					word_count, one_word_lowercase = parser.word_count_summary(usps_parsed)
+					usp_input2_EN.cell(row=n_row_en, column=7, value=', '.join(str(x) for x in word_count))
+					flag = False
+					for i in word_count:
+						if i < 3:
+							flag = True
+							break
+					usp_input2_EN.cell(row=n_row_en, column=8, value=flag)
+					flag = False
+					for i in word_count:
+						if i > 15:
+							flag = True
+							break
+					usp_input2_EN.cell(row=n_row_en, column=9, value=flag)
+					flag = False
+					for i in word_count:
+						if i == 0:
+							flag = True
+							break
+					usp_input2_EN.cell(row=n_row_en, column=10, value=flag)
+					flag = False
+					if one_word_lowercase:
+						flag = True
+						word = one_word_lowercase[0]
+						usp_input2_EN.cell(row=n_row_en, column=12, value=word)
+					# for i in word_count:
+					# 	if i == 1:
+					# 		flag = True
+					# 		break
+					usp_input2_EN.cell(row=n_row_en, column=11, value=flag)
+
+				if main_lang == 'DE':
+					n_row_de += 1
+					usp_input2_DE.cell(row=n_row_de, column=1, value=inOne)
+					usp_input2_DE.cell(row=n_row_de, column=2, value=data.cell(row=n,
+						column=isbn_col).value) # ISBN
+					usp_input2_DE.cell(row=n_row_de, column=3, value=inTwo)
+					usp_input2_DE.cell(row=n_row_de, column=4, value=html_total)
+					usp_input2_DE.cell(row=n_row_de, column=5, value=n_usps)			
+					usp_content = parser.usps_as_string(usps_parsed)
+					usp_input2_DE.cell(row=n_row_de, column=6, value=usp_content)
+					word_count, one_word_lowercase = parser.word_count_summary(usps_parsed)
+					usp_input2_DE.cell(row=n_row_de, column=7, value=', '.join(str(x) for x in word_count))
+					flag = False
+					for i in word_count:
+						if i < 3:
+							flag = True
+							break
+					usp_input2_DE.cell(row=n_row_de, column=8, value=flag)
+					flag = False
+					for i in word_count:
+						if i > 15:
+							flag = True
+							break
+					usp_input2_DE.cell(row=n_row_de, column=9, value=flag)
+					flag = False
+					for i in word_count:
+						if i == 0:
+							flag = True
+							break
+					usp_input2_DE.cell(row=n_row_de, column=10, value=flag)
+					flag = False
+					if one_word_lowercase:
+						flag = True
+						word = one_word_lowercase[0]
+						usp_input2_DE.cell(row=n_row_de, column=12, value=word)
+					# for i in word_count:
+					# 	if i == 1:
+					# 		flag = True
+					# 		break
+					usp_input2_DE.cell(row=n_row_de, column=11, value=flag)
 
 			
 

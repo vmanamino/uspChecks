@@ -183,3 +183,11 @@ class uspHtmlParser(HTMLParser):
 # parser.feed(single_word)
 # usps_parsed = parser.usps_parsed()
 # print(parser.word_count_summary(usps_parsed))
+
+# special = "Der Kindler kompakt-Band bietet eine Auswahl von ca. 60 Texten zu Märchen und Märchensammlungen aus allen Zeiten und Nationen, angefangen bei&nbsp;Tausendundeine Nacht über die deutschen, nordischen und russischen Märchen der Romantik bis hin zu den Endes, Lindgrens, Rowlings unserer Tage<div>Ein Einleitung des Herausgebers gibt eine kompakte und unterhaltsame Einführung in das Genre</div>"
+# # print(special)
+# parser = uspHtmlParser()
+# parser.feed(special)
+# usps_parsed = parser.usps_parsed()
+# print(parser.usps_parsed())
+# print(len(parser.tags))
