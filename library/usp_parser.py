@@ -76,8 +76,25 @@ class uspHtmlParser(HTMLParser):
         usps_parsed = []
         # p_newline = re.compile('^\n+$')
         p_whitespace = re.compile('^\s+$')   
-        for usp in self.output:
-            if not re.findall(p_whitespace, usp):
+        for each_usp in self.output:
+            usp = ''
+            if not re.findall(p_whitespace, each_usp):
+                usp_length = len(each_usp.split())
+                print('usp length')
+                print(usp_length)
+                if usp_length is 1 and each_usp.islower():
+                    print('condition calleed')
+                    usp_lonely = each_usp
+                    if len(usps_parsed) is not 0:
+                        joined = True
+                        usp_incomplete = usps_parsed[-1]
+                        usp = usp_incomplete +' '+usp_lonely
+                    else:
+                        usp = usp_lonely
+                else:
+                    usp = each_usp
+                if joined:
+                    usps_parsed[-1]
                 usps_parsed.append(usp)               
         return usps_parsed        
             # count += 1
@@ -177,11 +194,12 @@ class uspHtmlParser(HTMLParser):
 
 # single_word = "<p>Aktuell</p><p>Innovativ </p><p>Kompakt</p>"
 
-# single_word = "<p>Includes clear explanations of fundamentals for correct application</p><p>Contains key notes, experiences and implementation advice from</p><p>experts</p><p>Covers relevant and current topics including Drug Metabolizing Enzymes and Transporters</p>"
+single_word = "<p>Includes clear explanations of fundamentals for correct application</p><p>Contains key notes, experiences and implementation advice from</p><p>experts</p><p>Covers relevant and current topics including Drug Metabolizing Enzymes and Transporters</p>"
 
-# parser = uspHtmlParser()
-# parser.feed(single_word)
-# usps_parsed = parser.usps_parsed()
+parser = uspHtmlParser()
+parser.feed(single_word)
+usps_parsed = parser.usps_parsed()
+print(usps_parsed)
 # print(parser.word_count_summary(usps_parsed))
 
 # special = "Der Kindler kompakt-Band bietet eine Auswahl von ca. 60 Texten zu Märchen und Märchensammlungen aus allen Zeiten und Nationen, angefangen bei&nbsp;Tausendundeine Nacht über die deutschen, nordischen und russischen Märchen der Romantik bis hin zu den Endes, Lindgrens, Rowlings unserer Tage<div>Ein Einleitung des Herausgebers gibt eine kompakte und unterhaltsame Einführung in das Genre</div>"
@@ -191,3 +209,4 @@ class uspHtmlParser(HTMLParser):
 # usps_parsed = parser.usps_parsed()
 # print(parser.usps_parsed())
 # print(len(parser.tags))
+
