@@ -14,7 +14,7 @@ class uspHtmlParser(HTMLParser):
         
         # self.pre_data = False
         
-        if tag == 'b' or tag == 'i' or tag == 'em' or tag == 'sup':
+        if tag == 'b' or tag == 'i' or tag == 'em' or tag == 'sup' or tag == 'strong' or tag == 'sub':
             # print('inside startag first condition', end=' ')
             # print(tag)                       
             self.flag = True
@@ -74,17 +74,17 @@ class uspHtmlParser(HTMLParser):
         count = 0
         stri = ''
         usps_parsed = []
+        lonely_lowercases = []
         # p_newline = re.compile('^\n+$')
         p_whitespace = re.compile('^\s+$')   
         for each_usp in self.output:
+            joined = False
             usp = ''
             if not re.findall(p_whitespace, each_usp):
-                usp_length = len(each_usp.split())
-                print('usp length')
-                print(usp_length)
-                if usp_length is 1 and each_usp.islower():
-                    print('condition calleed')
+                usp_length = len(each_usp.split())                
+                if usp_length is 1 and each_usp.islower():                    
                     usp_lonely = each_usp
+                    lonely_lowercases.append(usp_lonely)
                     if len(usps_parsed) is not 0:
                         joined = True
                         usp_incomplete = usps_parsed[-1]
@@ -94,9 +94,10 @@ class uspHtmlParser(HTMLParser):
                 else:
                     usp = each_usp
                 if joined:
-                    usps_parsed[-1]
-                usps_parsed.append(usp)               
-        return usps_parsed        
+                    usps_parsed[-1] = usp
+                else:
+                    usps_parsed.append(usp)               
+        return usps_parsed, lonely_lowercases        
             # count += 1
             # stri += usp
             # if count < output_length:
@@ -125,9 +126,9 @@ class uspHtmlParser(HTMLParser):
         for each_usp in usps_parsed:
             usp_length = len(each_usp.split())
             count_list.append(usp_length)
-            if usp_length is 1 and each_usp.islower():
-                one_count_lowercase.append(each_usp)
-        return count_list, one_count_lowercase
+            # if usp_length is 1 and each_usp.islower():
+                # one_count_lowercase.append(each_usp)
+        return count_list
 
 # special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you</p>"
 # special_tags2 = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p>"
@@ -194,12 +195,14 @@ class uspHtmlParser(HTMLParser):
 
 # single_word = "<p>Aktuell</p><p>Innovativ </p><p>Kompakt</p>"
 
-single_word = "<p>Includes clear explanations of fundamentals for correct application</p><p>Contains key notes, experiences and implementation advice from</p><p>experts</p><p>Covers relevant and current topics including Drug Metabolizing Enzymes and Transporters</p>"
+# single_word = "<p>Includes clear explanations of fundamentals for correct application</p><p>Contains key notes, experiences and implementation advice from</p><p>experts</p><p>Covers relevant and current topics including Drug Metabolizing Enzymes and Transporters</p>"
 
-parser = uspHtmlParser()
-parser.feed(single_word)
-usps_parsed = parser.usps_parsed()
-print(usps_parsed)
+# parser = uspHtmlParser()
+# parser.feed(single_word)
+# usps_parsed, one_count_lowercase = parser.usps_parsed()
+# print(usps_parsed)
+# print(one_count_lowercase)
+# print(parser.word_count_summary(usps_parsed))
 # print(parser.word_count_summary(usps_parsed))
 
 # special = "Der Kindler kompakt-Band bietet eine Auswahl von ca. 60 Texten zu Märchen und Märchensammlungen aus allen Zeiten und Nationen, angefangen bei&nbsp;Tausendundeine Nacht über die deutschen, nordischen und russischen Märchen der Romantik bis hin zu den Endes, Lindgrens, Rowlings unserer Tage<div>Ein Einleitung des Herausgebers gibt eine kompakte und unterhaltsame Einführung in das Genre</div>"
@@ -210,3 +213,17 @@ print(usps_parsed)
 # print(parser.usps_parsed())
 # print(len(parser.tags))
 
+# strong = "<ul><li><em>Numerical Python</em><strong> </strong>by <strong>Robert Johansson</strong> shows you how to leverage the numerical and mathematical modules in Python and its Standard Library.</li><li>It covers the popular open source numerical Python packages like NumPy, FiPy, Pillow, matplotlib and more.</li><li>Applications include those from business management, big data/cloud computing, financial engineering and games.</li></ul>"
+
+# parser = uspHtmlParser()
+# parser.feed(strong)
+# usps_parsed = parser.usps_parsed()
+# print(parser.usps_parsed())
+# print(len(parser.tags))
+
+# sub = "<p>Gathers 30 years of experimental research on trees, beginning at the elemental/molecular scale and extending to the tree-stand scale</p><p>Presents the latest experimental findings about the effects of climate change on the mineral content of trees, carbohydrate allocation, tree anatomy, tree growth, leaf longevity, and gas exchange in soil–litter–plant systems</p><p>Investigates the interactive effects of relatively small, realistic increases in temperature and CO<sub>2</sub> concentration&nbsp;</p>"
+# parser = uspHtmlParser()
+# parser.feed(sub)
+# usps_parsed = parser.usps_parsed()
+# print(parser.usps_parsed())
+# print(len(parser.tags))

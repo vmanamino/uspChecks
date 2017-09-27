@@ -164,12 +164,12 @@ for n in range(2, count):
 			langs = data.cell(row=n, column=4).value
 			main_lang = langs.split()[0]
 
-			if main_lang == 'EN' or main_lang == 'DE':
-				usps_parsed = parser.usps_parsed()
-				n_usps = len(usps_parsed)
+			if main_lang == 'EN' or main_lang == 'DE':	
+				usps_parsed, one_word_lowercase = parser.usps_parsed()
+				n_usps = len(usps_parsed)			
 				# n_row_input2 += 1				
 
-				if main_lang == 'EN':
+				if main_lang == 'EN':					
 					n_row_en += 1		
 					usp_input2_EN.cell(row=n_row_en, column=1, value=inOne)
 					usp_input2_EN.cell(row=n_row_en, column=2, value=data.cell(row=n,
@@ -179,7 +179,7 @@ for n in range(2, count):
 					usp_input2_EN.cell(row=n_row_en, column=5, value=n_usps)			
 					usp_content = parser.usps_as_string(usps_parsed)
 					usp_input2_EN.cell(row=n_row_en, column=6, value=usp_content)
-					word_count, one_word_lowercase = parser.word_count_summary(usps_parsed)
+					word_count = parser.word_count_summary(usps_parsed)
 					usp_input2_EN.cell(row=n_row_en, column=7, value=', '.join(str(x) for x in word_count))
 					flag = False
 					for i in word_count:
@@ -201,9 +201,8 @@ for n in range(2, count):
 					usp_input2_EN.cell(row=n_row_en, column=10, value=flag)
 					flag = False
 					if one_word_lowercase:
-						flag = True
-						word = one_word_lowercase[0]
-						usp_input2_EN.cell(row=n_row_en, column=12, value=word)
+						flag = True						
+						usp_input2_EN.cell(row=n_row_en, column=12, value=str(one_word_lowercase))
 					# for i in word_count:
 					# 	if i == 1:
 					# 		flag = True
@@ -220,7 +219,7 @@ for n in range(2, count):
 					usp_input2_DE.cell(row=n_row_de, column=5, value=n_usps)			
 					usp_content = parser.usps_as_string(usps_parsed)
 					usp_input2_DE.cell(row=n_row_de, column=6, value=usp_content)
-					word_count, one_word_lowercase = parser.word_count_summary(usps_parsed)
+					word_count = parser.word_count_summary(usps_parsed)
 					usp_input2_DE.cell(row=n_row_de, column=7, value=', '.join(str(x) for x in word_count))
 					flag = False
 					for i in word_count:
@@ -244,7 +243,7 @@ for n in range(2, count):
 					if one_word_lowercase:
 						flag = True
 						word = one_word_lowercase[0]
-						usp_input2_DE.cell(row=n_row_de, column=12, value=word)
+						usp_input2_DE.cell(row=n_row_de, column=12, value=str(one_word_lowercase))
 					# for i in word_count:
 					# 	if i == 1:
 					# 		flag = True
