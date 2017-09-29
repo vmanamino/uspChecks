@@ -10,30 +10,16 @@ class uspHtmlParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)  
 
-    def handle_starttag(self, tag, attrs): 
-        
-        # self.pre_data = False
-        
-        if tag == 'b' or tag == 'i' or tag == 'em' or tag == 'sup' or tag == 'strong' or tag == 'sub':
-            # print('inside startag first condition', end=' ')
-            # print(tag)                       
+    def handle_starttag(self, tag, attrs):         
+        if tag == 'b' or tag == 'i' or tag == 'em' or tag == 'sup' or tag == 'strong' or tag == 'sub':                                 
             self.flag = True
-        else:
-            # print('inside startag second else', end=' ')
-            # print(tag)      
+        else:               
             self.pre_data = False         
             self.tags.append(tag)
         	       
-    def handle_data(self, data):
-        # print('this is my data: '+ data)
-        # print('this is my tag flag: ', end="")
-        # print(self.flag)
+    def handle_data(self, data):        
         if self.flag:            
-            self.flag = False
-            # print("pre data flag: ", end='')
-            # print(self.pre_data)
-            # print('this is my post data flag: ', end='')
-            # print(self.post_data)
+            self.flag = False            
             if self.pre_data and self.output:
                 last_element = self.output[-1]
                 new_last_element = last_element +' '+data
@@ -43,18 +29,12 @@ class uspHtmlParser(HTMLParser):
                 self.output.append(data)
                 self.pre_data = True
                 self.post_data = True
-        else:
-            # print('this is my pre data flag: ', end='')
-            # print(self.pre_data)
-            # print('this is my post data flag: ', end='')
-            # print(self.post_data)
+        else:            
             if not self.pre_data: 
                 self.pre_data = True    
                 self.output.append(data)
             else:
-                if self.post_data:
-                    # print('my output', end=' ')
-                    # print(self.output)
+                if self.post_data:                    
                     if data and self.output:
                         last_element = self.output[-1]
                         new_last_element = last_element +' '+data
@@ -74,8 +54,7 @@ class uspHtmlParser(HTMLParser):
         count = 0
         stri = ''
         usps_parsed = []
-        lonely_lowercases = []
-        # p_newline = re.compile('^\n+$')
+        lonely_lowercases = []        
         p_whitespace = re.compile('^\s+$')   
         for each_usp in self.output:
             joined = False
@@ -98,14 +77,7 @@ class uspHtmlParser(HTMLParser):
                 else:
                     usps_parsed.append(usp)               
         return usps_parsed, lonely_lowercases        
-            # count += 1
-            # stri += usp
-            # if count < output_length:
-            #     # here check for hidden characters such as newline and space.  
-            #     # remove those usps from the output list
-            #     # at the same time, put out the string of parsed usps
-            #     stri += ' |'
-        # return stri
+            
     @staticmethod
     def usps_as_string(usps_parsed):
         stri = ''
@@ -125,9 +97,7 @@ class uspHtmlParser(HTMLParser):
         one_count_lowercase = []
         for each_usp in usps_parsed:
             usp_length = len(each_usp.split())
-            count_list.append(usp_length)
-            # if usp_length is 1 and each_usp.islower():
-                # one_count_lowercase.append(each_usp)
+            count_list.append(usp_length)            
         return count_list
 
 # special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you</p>"
