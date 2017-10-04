@@ -169,6 +169,7 @@ for n in range(2, count):
 				n_usps = len(usps_parsed)			
 				# n_row_input2 += 1				
 
+				# add loop of 3 to add target usps, append to current columns, each third as separate column
 				if main_lang == 'EN':					
 					n_row_en += 1		
 					usp_input2_EN.cell(row=n_row_en, column=1, value=inOne)
