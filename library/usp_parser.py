@@ -128,7 +128,7 @@ class uspHtmlParser(HTMLParser):
         
         return target_usps
 
-special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you</p>"
+# special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you</p>"
 # special_tags2 = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p>"
 # special_tags3 = "<p><b>In der Krise lesbar</b>: Wissenschaftlich fundiert und verständlich formuliert</p><p><b>Erfahrenes Autorenteam</b>: Beteiligt Praktikerin, Betroffene, Wissenschaftler</p><p><b>Beratung</b>: Kurze Übersicht mit praktischen Hinweisen</p><p><b>Menschlich</b>: Nicht medizinisch auf Krebsarten bezogen, sondern auf die Ressource Menschlichkeit</p>"
 # swirlytags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p><b>Erfahrenes Autorenteam</b>: Beteiligt Praktikerin, Betroffene, Wissenschaftler</p><p><em>Beratung</em>: Kurze Übersicht mit praktischen Hinweisen</p>"
@@ -136,7 +136,7 @@ special_tags = "<p>You will be told each step of the way, not only <i>how</i> to
 # print(special_tags2)        
 # divTag = '<div>usp1</div><div>usp2</div><div>usp3</div>'
 # divTag2 = '<div>usp1</div>'
-brTag = """USP 1<br>USP II<br>USP-3"""
+# brTag = """USP 1<br>USP II<br>USP-3"""
 # liTag_divWrapped_target = """<div><ul><li>USP 1</li><li>USP 2</li><li>USP-3</li></ul></div>"""
 # divTag_wrap = """<div>USP 1</div><div><br></div><div>USP 2</div><div><br></div><div>USP-3</div><div><br></div><div>USP 4</div>"""
 # none = """USP 1  USP2  USP-3"""
@@ -226,13 +226,13 @@ brTag = """USP 1<br>USP II<br>USP-3"""
 # print(parser.usps_parsed())
 # print(len(parser.tags))
 
-more_than_three = "<p>Optimiert für Bachelor</p><p>In sich geschlossene Darstellung</p><p>Aufgaben mit ausführlichen Lösungen – Kontrollfragen</p><p>Sehr erfahrener Autor</p><p>Zweifarbiges Layout</p><p>Übersichtlich und lerngerecht</p><p>Sehr gut eingeführter Kurs</p>"
+# seven_usps = "<p>Optimiert für Bachelor</p><p>In sich geschlossene Darstellung</p><p>Aufgaben mit ausführlichen Lösungen – Kontrollfragen</p><p>Sehr erfahrener Autor</p><p>Zweifarbiges Layout</p><p>Übersichtlich und lerngerecht</p><p>Sehr gut eingeführter Kurs</p>"
 
-parser = uspHtmlParser()
-parser.feed(special_tags)
-usps, lonely_lowercases = parser.usps_parsed()
-print(usps)
-targets = parser.get_target_usps(usps)
-print(targets)
+# parser = uspHtmlParser()
+# parser.feed(special_tags)
+# usps, lonely_lowercases = parser.usps_parsed()
+# print(usps)
+# targets = parser.get_target_usps(usps)
+# print(targets)
 
 

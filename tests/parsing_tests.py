@@ -87,6 +87,7 @@ whitespace2 = """<p>USP 1</p><p>USP 2</p><p> </p><p>USP 3</p><p>USP 4</p><p>USP 
 
 single_word = "<p>Includes clear explanations of fundamentals for correct application</p><p>Contains key notes, experiences and implementation advice from</p><p>experts</p><p>Covers relevant and current topics including Drug Metabolizing Enzymes and Transporters</p>"
 
+seven_usps = "<p>Optimiert für Bachelor</p><p>In sich geschlossene Darstellung</p><p>Aufgaben mit ausführlichen Lösungen – Kontrollfragen</p><p>Sehr erfahrener Autor</p><p>Zweifarbiges Layout</p><p>Übersichtlich und lerngerecht</p><p>Sehr gut eingeführter Kurs</p>"
 # usps = parser.feed(pTag_target)
 # print(parser.output)
 class isUSPTests(unittest.TestCase):	
@@ -197,6 +198,30 @@ class isContentTests(unittest.TestCase):
 	def test_lonely_lowercases(self):
 		parser.feed(single_word) # experts
 		self.assertTrue(parser.usps_parsed() == (['Includes clear explanations of fundamentals for correct application', 'Contains key notes, experiences and implementation advice from experts', 'Covers relevant and current topics including Drug Metabolizing Enzymes and Transporters'], ['experts']))
+
+class isTargetsTests(unittest.TestCase):
+
+	def test_less_than_three(self):
+		parser.feed(special_tags)
+		usps, lonely_lowercases = parser.usps_parsed()
+		targets = parser.get_target_usps(usps)
+		# print(targets)
+		self.assertTrue(targets == ['You will be told each step of the way, not only  how  to use Excel, but also  why  you are doing each step – so you can learn the techniques to apply Excel beyond this book', 'You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you', 'No USP 3'])
+	
+	def test_is_three(self):
+		parser.feed(brTag_target)
+		usps, lonely_lowercases = parser.usps_parsed()
+		targets = parser.get_target_usps(usps)
+		# print(targets)
+		self.assertTrue(targets == ['USP 1', 'USP II', 'USP-3'])
+
+	def test_more_than_three(self):
+		parser.feed(seven_usps)
+		usps, lonely_lowercases = parser.usps_parsed()
+		targets = parser.get_target_usps(usps)
+		# print(targets)
+		self.assertTrue(targets == ['Optimiert für Bachelor', 'In sich geschlossene Darstellung', 'Aufgaben mit ausführlichen Lösungen – Kontrollfragen'])
+
 
 class isNotUSPTests(unittest.TestCase):
 
