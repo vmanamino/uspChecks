@@ -114,6 +114,7 @@ usp_input2_DE.cell(row=n_row_de, column=12, value="the lowercase word")
 usp_input2_DE.cell(row=n_row_de, column=13, value="USP 1")
 usp_input2_DE.cell(row=n_row_de, column=14, value="USP 2")
 usp_input2_DE.cell(row=n_row_de, column=15, value="USP 3")
+usp_input2_DE.cell(row=n_row_de, column=16, value="Repeating USP")
 
 
 # english
@@ -130,9 +131,10 @@ usp_input2_EN.cell(row=n_row_en, column=9, value="More than 15 Words")
 usp_input2_EN.cell(row=n_row_en, column=10, value="O words")
 usp_input2_EN.cell(row=n_row_en, column=11, value="1 lowercase word")
 usp_input2_EN.cell(row=n_row_en, column=12, value="the lowercase word")
-usp_input2_DE.cell(row=n_row_en, column=13, value="USP 1")
-usp_input2_DE.cell(row=n_row_en, column=14, value="USP 2")
-usp_input2_DE.cell(row=n_row_en, column=15, value="USP 3")
+usp_input2_EN.cell(row=n_row_en, column=13, value="USP 1")
+usp_input2_EN.cell(row=n_row_en, column=14, value="USP 2")
+usp_input2_EN.cell(row=n_row_en, column=15, value="USP 3")
+usp_input2_EN.cell(row=n_row_de, column=16, value="Repeating USP")
 
 
 
@@ -174,6 +176,7 @@ for n in range(2, count):
 			if main_lang == 'EN' or main_lang == 'DE':	
 				usps_parsed, one_word_lowercase = parser.usps_parsed()
 				targets = parser.get_target_usps(usps_parsed)
+				repeating = parser.get_repeating_usps_single_title(targets)
 				n_usps = len(usps_parsed)			
 				# n_row_input2 += 1				
 
@@ -225,6 +228,8 @@ for n in range(2, count):
 							usp_input2_EN.cell(row=n_row_en, column=column_targets, value=targets[count_targets])
 							column_targets += 1
 							count_targets += 1
+					# previous if clause takes column number to 15, repeating usp in column 16
+					usp_input2_EN.cell(row=n_row_en, column=16, value=repeating)
 
 
 				if main_lang == 'DE':
@@ -275,7 +280,8 @@ for n in range(2, count):
 							usp_input2_DE.cell(row=n_row_de, column=column_targets, value=targets[count_targets])
 							column_targets += 1
 							count_targets += 1
-
+					# previous if clause takes column number to 15, repeating usp in column 16
+					usp_input2_DE.cell(row=n_row_de, column=16, value=repeating)
 			
 
 print_date = time.strftime("%d%m%y")

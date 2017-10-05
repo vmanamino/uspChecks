@@ -128,6 +128,19 @@ class uspHtmlParser(HTMLParser):
         
         return target_usps
 
+    # works only with target usps, namely first three
+    @staticmethod
+    def get_repeating_usps_single_title(target_usps):
+        usp1 = target_usps[0]
+        usp2 = target_usps[1]
+        if usp1 == target_usps[1] or usp1 == target_usps[2]:
+            return usp1
+        elif usp2 == target_usps[2]:
+            return usp2
+        else:
+            return "None"
+        
+
 # special_tags = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will learn both how to write statistical formulas and how to use drop-down menus to have Excel create formulas for you</p>"
 # special_tags2 = "<p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p><p>You will be told each step of the way, not only <i>how</i> to use Excel, but also <i>why</i> you are doing each step – so you can learn the techniques to apply Excel beyond this book</p>"
 # special_tags3 = "<p><b>In der Krise lesbar</b>: Wissenschaftlich fundiert und verständlich formuliert</p><p><b>Erfahrenes Autorenteam</b>: Beteiligt Praktikerin, Betroffene, Wissenschaftler</p><p><b>Beratung</b>: Kurze Übersicht mit praktischen Hinweisen</p><p><b>Menschlich</b>: Nicht medizinisch auf Krebsarten bezogen, sondern auf die Ressource Menschlichkeit</p>"
@@ -243,3 +256,13 @@ class uspHtmlParser(HTMLParser):
 # print(usps)
 
 # ['Wirtschaftswissenschaftliche Studie', '\u200b', 'Nonprofit-Management', 'Genossenschaften und der Dritte Sektor']
+
+# repeating_one = "<p>Implements a novel integrated method for detecting the wellness of individuals</p><p>Presents new developments and advancements in wireless sensors for the field of ambient assisted living</p><p>Implements a novel integrated method for detecting the wellness of individuals</p>"
+# repeating_two = "<p>Implements a novel integrated method for detecting the wellness of individuals</p><p>Implements a novel integrated method for detecting the wellness of individuals</p><p>Presents new developments and advancements in wireless sensors for the field of ambient assisted living</p>"
+# repeating_three = "<p>Presents new developments and advancements in wireless sensors for the field of ambient assisted living</p><p>Implements a novel integrated method for detecting the wellness of individuals</p><p>Implements a novel integrated method for detecting the wellness of individuals</p>"
+# repeating_four = "<p>Implements a novel integrated method for detecting the wellness of individuals</p><p>Implements a novel integrated method for detecting the wellness of individuals</p><p>Implements a novel integrated method for detecting the wellness of individuals</p>"
+# parser = uspHtmlParser()
+# parser.feed(repeating_four)
+# usps, lonely_lowercases = parser.usps_parsed()
+# repeat = parser.get_repeating_usps_single_title(usps)
+# print(repeat)
