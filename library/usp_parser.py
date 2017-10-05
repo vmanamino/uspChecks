@@ -235,4 +235,11 @@ class uspHtmlParser(HTMLParser):
 # targets = parser.get_target_usps(usps)
 # print(targets)
 
+# white_space ="<div>Wirtschaftswissenschaftliche Studie</div><div>​</div><div>Nonprofit-Management</div><div><br></div><div>Genossenschaften und der Dritte Sektor</div><div><br></div>"
 
+# parser = uspHtmlParser()
+# parser.feed(white_space)
+# usps, lonely_lowercases = parser.usps_parsed()
+# print(usps)
+
+# ['Wirtschaftswissenschaftliche Studie', '\u200b', 'Nonprofit-Management', 'Genossenschaften und der Dritte Sektor']
